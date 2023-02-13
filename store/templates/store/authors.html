@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Authors list{% endblock %}
+
+{% block content %}
+<a href="{% url 'store:index' %}">Return to main page</a>
+<table border="1" cellspacing="1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in entries_list %}
+        <tr>
+            <td><a href="{% url 'store:author_detail' entry.id %}">{{ entry.name }}</a></td>
+            <td>{{ entry.age }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

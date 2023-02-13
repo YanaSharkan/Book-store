@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Store Details{% endblock %}
+
+{% block content %}
+<div><a href="{% url 'store:stores' %}">Return back to list</a></div>
+<div>Book name: {{ book.name }}</div>
+<div>Books:</div>
+{% for book in store.books.all %}
+<div>- {{ book.name }}</div>
+{% endfor %}
+{% endblock %}

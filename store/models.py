@@ -37,6 +37,14 @@ class Book(models.Model):
         """
         return self.name
 
+    def display_authors(self):
+        """
+        Creates a string for the Authors.
+        """
+        return ', '.join([author.name for author in self.authors.all()[:]])
+
+    display_authors.short_description = 'Author'
+
 
 class Store(models.Model):
     name = models.CharField(max_length=300)
@@ -47,3 +55,11 @@ class Store(models.Model):
         String for representing the Model object.
         """
         return self.name
+
+    def display_books(self):
+        """
+        Creates a string for the Books.
+        """
+        return ', '.join([book.name for book in self.books.all()[:7]])
+
+    display_books.short_description = 'Book'

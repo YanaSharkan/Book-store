@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Book Details{% endblock %}
+
+{% block content %}
+<div><a href="{% url 'store:books' %}">Return back to list</a></div>
+<div>Book name: {{ book.name }}</div>
+<div>Book pages: {{ book.pages }}</div>
+<div>Price: {{ book.price }}</div>
+<div>Rating: {{ book.rating }}</div>
+<div>Authors:</div>
+{% for author in book.authors.all %}
+<div>- {{ author.name }}</div>
+{% endfor %}
+<div>Publisher: {{ book.publisher }}</div>
+{% endblock %}

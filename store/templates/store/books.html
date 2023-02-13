@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Books list{% endblock %}
+
+{% block content %}
+<a href="{% url 'store:index' %}">Return to main page</a>
+<table border="1" cellspacing="1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Pages</th>
+            <th>Price</th>
+            <th>Rating</th>
+            <th>Authors</th>
+            <th>Publisher</th>
+            <th>Pub Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in entries_list %}
+        <tr>
+            <td><a href="{% url 'store:book_detail' entry.id %}">{{ entry.name }}</a></td>
+            <td>{{ entry.pages }}</td>
+            <td>{{ entry.price }}</td>
+            <td>{{ entry.rating }}</td>
+            <td>
+                {% for author in entry.authors.all %}
+                <div>{{ author.name }}</div>
+                {% endfor %}
+            </td>
+            <td>{{ entry.publisher }}</td>
+            <td>{{ entry.pubdate }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
