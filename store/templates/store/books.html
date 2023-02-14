@@ -11,6 +11,7 @@
             <th>Pages</th>
             <th>Price</th>
             <th>Rating</th>
+            <th>Authors Count</th>
             <th>Authors</th>
             <th>Publisher</th>
             <th>Pub Date</th>
@@ -23,6 +24,7 @@
             <td>{{ entry.pages }}</td>
             <td>{{ entry.price }}</td>
             <td>{{ entry.rating }}</td>
+            <td>{{ entry.authors__count }}</td>
             <td>
                 {% for author in entry.authors.all %}
                 <div>{{ author.name }}</div>
