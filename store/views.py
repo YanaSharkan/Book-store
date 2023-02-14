@@ -1,3 +1,4 @@
+from django.db.models import Avg, Count
 from django.views import generic
 
 from .models import Author, Book, Publisher, Store
@@ -38,7 +39,7 @@ class BooksView(generic.ListView):
     template_name = 'store/books.html'
 
     def get_queryset(self):
-        return Book.objects.prefetch_related('authors', 'publisher').all()
+        return Book.objects.prefetch_related('authors', 'publisher').annotate(Count('authors')).all()
 
 
 class BookDetailView(generic.DetailView):
@@ -51,9 +52,14 @@ class StoresView(generic.ListView):
     template_name = 'store/stores.html'
 
     def get_queryset(self):
-        return Store.objects.prefetch_related('books').all()
+        return Store.objects.prefetch_related('books').annotate(Count('books')).all()
 
 
 class StoreDetailView(generic.DetailView):
     model = Store
     template_name = 'store/store.html'
+
+    def get_object(self):
+        store = super(StoreDetailView, self).get_object()
+        store.avg_book_price = store.books.all().aggregate(Avg('price'))['price__avg']
+        return store

@@ -4,7 +4,8 @@
 
 {% block content %}
 <div><a href="{% url 'store:stores' %}">Return back to list</a></div>
-<div>Book name: {{ book.name }}</div>
+<div>Store name: {{ store.name }}</div>
+<div>Avg Book price: {{ store.avg_book_price }}</div>
 <div>Books:</div>
 {% for book in store.books.all %}
 <div>- {{ book.name }}</div>

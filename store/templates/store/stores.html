@@ -8,6 +8,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Books Count</th>
             <th>Books</th>
         </tr>
     </thead>
@@ -15,6 +16,7 @@
         {% for entry in entries_list %}
         <tr>
             <td><a href="{% url 'store:store_detail' entry.id %}">{{ entry.name }}</a></td>
+            <td>{{ entry.books__count }}</td>
             <td>
                 {% for book in entry.books.all %}
                 <div>{{ book.name }}</div>
