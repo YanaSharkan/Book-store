@@ -1,7 +1,11 @@
 from django.db.models import Avg, Count
+from django.shortcuts import render
 from django.views import generic
 
+
+from .forms import ReminderForm
 from .models import Author, Book, Publisher, Store
+from .tasks import send_reminder
 
 
 class IndexView(generic.TemplateView):
@@ -63,3 +67,19 @@ class StoreDetailView(generic.DetailView):
         store = super(StoreDetailView, self).get_object()
         store.avg_book_price = store.books.all().aggregate(Avg('price'))['price__avg']
         return store
+
+
+def create_reminder(request):
+    params = dict()
+    params["form"] = ReminderForm()
+
+    if request.method == "POST":
+        form = ReminderForm(request.POST)
+        if form.is_valid():
+            send_reminder.apply_async((form.cleaned_data['email'], form.cleaned_data['text']),
+                                      eta=form.cleaned_data['date_time'])
+            params["result"] = "Reminder scheduled"
+        else:
+            params["error"] = "Date not valid"
+
+    return render(request, "store/reminder.html", params)

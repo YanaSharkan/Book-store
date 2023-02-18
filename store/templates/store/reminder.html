@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Reminder</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'store/style.css' %}">
+    </head>
+    <body>
+        <main>
+            <h3>Create reminder</h3>
+            {% if error %}
+                <div>Error: {{ error }}</div>
+            {% endif %}
+            {% if result %}
+                <div>Success: {{ result }}</div>
+            {% endif %}
+            <form method="post" action="{% url 'store:create_reminder' %}">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Send" />
+            </form>
+        </main>
+    </body>
+</html>
