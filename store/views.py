@@ -1,9 +1,9 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Avg, Count
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 
 from .forms import ReminderForm
@@ -23,6 +23,8 @@ class IndexView(generic.TemplateView):
 class AuthorsView(generic.ListView):
     template_name = 'store/authors.html'
     context_object_name = 'entries_list'
+    paginate_by = 5
+    model = Author
 
     def get_queryset(self):
         return Author.objects.all()
@@ -49,6 +51,8 @@ class PublisherDetailView(generic.DetailView):
 class BooksView(generic.ListView):
     context_object_name = 'entries_list'
     template_name = 'store/books.html'
+    paginate_by = 10
+    model = Book
 
     def get_queryset(self):
         return Book.objects.prefetch_related('authors', 'publisher').annotate(Count('authors')).all()
