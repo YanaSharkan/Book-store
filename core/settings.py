@@ -20,6 +20,10 @@ TIME_ZONE = 'Europe/Kiev'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Login
+LOGIN_URL = '/admin/login/'
+
+
 # Celery
 CELERY_BROKER_URL = 'amqp://localhost'
 CELERY_TIMEZONE = TIME_ZONE
