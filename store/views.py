@@ -1,11 +1,19 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Avg, Count
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 
 from .forms import ReminderForm
 from .models import Author, Book, Publisher, Store
 from .tasks import send_reminder
+
+
+class AdminRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class IndexView(generic.TemplateView):
@@ -15,6 +23,8 @@ class IndexView(generic.TemplateView):
 class AuthorsView(generic.ListView):
     template_name = 'store/authors.html'
     context_object_name = 'entries_list'
+    paginate_by = 5
+    model = Author
 
     def get_queryset(self):
         return Author.objects.all()
@@ -41,6 +51,8 @@ class PublisherDetailView(generic.DetailView):
 class BooksView(generic.ListView):
     context_object_name = 'entries_list'
     template_name = 'store/books.html'
+    paginate_by = 10
+    model = Book
 
     def get_queryset(self):
         return Book.objects.prefetch_related('authors', 'publisher').annotate(Count('authors')).all()
@@ -67,6 +79,22 @@ class StoreDetailView(generic.DetailView):
         store = super(StoreDetailView, self).get_object()
         store.avg_book_price = store.books.all().aggregate(Avg('price'))['price__avg']
         return store
+
+
+class AuthorCreateView(AdminRequiredMixin, CreateView):
+    model = Author
+    fields = ['name', 'age']
+
+
+class AuthorUpdateView(AdminRequiredMixin, UpdateView):
+    model = Author
+    fields = ['name', 'age']
+    template_name_suffix = '_update_form'
+
+
+class AuthorDeleteView(AdminRequiredMixin, DeleteView):
+    model = Author
+    success_url = reverse_lazy('store:authors')
 
 
 def create_reminder(request):

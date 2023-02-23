@@ -5,6 +5,9 @@ class Author(models.Model):
     name = models.CharField(max_length=100)
     age = models.IntegerField()
 
+    def get_absolute_url(self):
+        return '/store/author/%i/' % self.id
+
     def __str__(self):
         """
         String for representing the Model object.

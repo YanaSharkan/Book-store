@@ -4,6 +4,8 @@
 
 {% block content %}
 <div><a href="{% url 'store:authors' %}">Return back to list</a></div>
+<div><a href="{% url 'store:author_edit' author.id %}">Edit</a></div>
+<div><a href="{% url 'store:author_delete' author.id %}">Delete</a></div>
 <div>Author name: {{ author.name }}</div>
 <div>Author age: {{author.age}}</div>
 {% endblock %}
